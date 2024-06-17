@@ -3,28 +3,51 @@ import Button from '../components/Button'
 import {useState} from 'react'
 import Input from '../components/Input'
 
-const handleOnPress = () => {
-    console.log("hello")
-    }
+
 
 
 const Calculator = () => {
-  
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState("");
+
   const {height, width} = useWindowDimensions();
 
   const buttonWidth = ((width -32)-5*16) / 4;
   const doubleButtonWidth = buttonWidth * 2 + 16;
 
-  console.log(buttonWidth);
+  const handleOnPress = (value) => {
+    console.log("value", value);
+    if (value === 'C') {
+      setInput('');
+    } else if (value === '=') {
+      try {
+        const evalResult = eval(input);
+        setInput(evalResult.toString());
+      } catch (error) {
+        setInput('Error');
+      }
+    } else if (value === '-/+') {
+      if (input) {
+        if (input.startsWith('-')) {
+          setInput(input.substring(1));
+        } else {
+          setInput('-' + input);
+        }
+      }
+    } else {
+      setInput(input + value);
+    } 
+      };
 
 
   return (
     <>
-    <Input />
+    <Input  value={input} />
+  
     <View style={styles.buttonContainer}>
-      <Button buttonColor= "grey" buttonValue="C" onPress={handleOnPress} textColor="white" buttonSize={buttonWidth} buttonHeight={buttonWidth}/>
-      <Button buttonColor= "grey" buttonValue="-/+" onPress={handleOnPress} textColor="white" buttonSize={buttonWidth} buttonHeight={buttonWidth}/>
-      <Button buttonColor= "grey" buttonValue="%" onPress={handleOnPress} textColor="white" buttonSize={buttonWidth} buttonHeight={buttonWidth}/>
+      <Button buttonColor= "#a6a6a6" buttonValue="C" onPress={handleOnPress} textColor="black" buttonSize={buttonWidth} buttonHeight={buttonWidth}/>
+      <Button buttonColor= "#a6a6a6" buttonValue="-/+" onPress={handleOnPress} textColor="black" buttonSize={buttonWidth} buttonHeight={buttonWidth}/>
+      <Button buttonColor= "#a6a6a6" buttonValue="%" onPress={handleOnPress} textColor="black" buttonSize={buttonWidth} buttonHeight={buttonWidth}/>
       <Button buttonColor= "orange" buttonValue="/" onPress={handleOnPress} textColor="white"buttonSize={buttonWidth} buttonHeight={buttonWidth}/>
       <Button buttonColor= "#495057" buttonValue="7" onPress={handleOnPress} textColor="white" buttonSize={buttonWidth} buttonHeight={buttonWidth}/>
       <Button buttonColor= "#495057" buttonValue="8" onPress={handleOnPress} textColor="white"buttonSize={buttonWidth} buttonHeight={buttonWidth}/>
